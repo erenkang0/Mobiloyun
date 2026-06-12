@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../models/brick.dart';
 import '../models/game_state.dart';
 import '../providers/game_provider.dart';
 import '../widgets/brick_widget.dart';
