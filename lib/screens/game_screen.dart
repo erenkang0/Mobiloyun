@@ -29,9 +29,10 @@ class GameScreen extends ConsumerWidget {
           children: [
             Text(
               'BRICLE',
-              style: GoogleFonts.fredokaOne(
+              style: GoogleFonts.fredoka(
                 color: Colors.white,
                 fontSize: 22,
+                fontWeight: FontWeight.w700,
                 letterSpacing: 2,
               ),
             ),
@@ -45,7 +46,11 @@ class GameScreen extends ConsumerWidget {
                 ),
                 child: Text(
                   'MEYDAN',
-                  style: GoogleFonts.fredokaOne(fontSize: 12, color: Colors.white),
+                  style: GoogleFonts.fredoka(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
               ),
           ],
@@ -56,9 +61,10 @@ class GameScreen extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 6),
               child: Text(
                 '${gameState.score} pts',
-                style: GoogleFonts.fredokaOne(
+                style: GoogleFonts.fredoka(
                   color: const Color(0xFFFFD700),
                   fontSize: 20,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -77,9 +83,10 @@ class GameScreen extends ConsumerWidget {
             ),
             child: Text(
               'BİTİR',
-              style: GoogleFonts.fredokaOne(
+              style: GoogleFonts.fredoka(
                 color: const Color(0xFF00A850),
                 fontSize: 16,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),

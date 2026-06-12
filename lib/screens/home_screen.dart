@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/brick.dart';
 import '../models/game_state.dart';
 import '../providers/game_provider.dart';
 import '../widgets/brick_widget.dart';
@@ -71,8 +70,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   children: [
                     Text(
                       'BRICLE',
-                      style: GoogleFonts.fredokaOne(
+                      style: GoogleFonts.fredoka(
                         fontSize: 80,
+                        fontWeight: FontWeight.w700,
                         color: Colors.white,
                         letterSpacing: 6,
                         shadows: const [
@@ -84,7 +84,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     const SizedBox(height: 8),
                     Text(
                       'Rastgele tuğlalarla yarat!',
-                      style: GoogleFonts.fredokaOne(
+                      style: GoogleFonts.fredoka(
                         fontSize: 17,
                         color: Colors.white54,
                       ),
@@ -118,13 +118,19 @@ class _DecorBrick {
   final double x;
   final double speed;
   final double phase;
-  final Brick brick;
+  final String brickId;
+  final int w;
+  final int h;
+  final Color color;
 
   _DecorBrick(Random rng, int i)
       : x = rng.nextDouble(),
         speed = 0.15 + rng.nextDouble() * 0.6,
         phase = rng.nextDouble(),
-        brick = Brick.random('decor_$i');
+        brickId = 'decor_$i',
+        w = 1 + rng.nextInt(3),
+        h = 1 + rng.nextInt(2),
+        color = legoColors[rng.nextInt(legoColors.length)];
 }
 
 class _FloatingBrick extends StatelessWidget {
@@ -152,7 +158,15 @@ class _FloatingBrick extends StatelessWidget {
           ),
         );
       },
-      child: BrickWidget(brick: decor.brick, cellSize: 22),
+      child: Container(
+        width: decor.w * 24.0,
+        height: decor.h * 24.0,
+        decoration: BoxDecoration(
+          color: decor.color,
+          borderRadius: BorderRadius.circular(3),
+          border: Border.all(color: Colors.black26),
+        ),
+      ),
     );
   }
 }
@@ -187,7 +201,7 @@ class _HomeButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.45),
+              color: color.withValues(alpha: 0.45),
               offset: const Offset(0, 6),
               blurRadius: 16,
             ),
@@ -204,8 +218,9 @@ class _HomeButton extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               label,
-              style: GoogleFonts.fredokaOne(
+              style: GoogleFonts.fredoka(
                 fontSize: 22,
+                fontWeight: FontWeight.w700,
                 color: Colors.white,
                 letterSpacing: 1,
               ),

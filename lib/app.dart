@@ -15,7 +15,7 @@ class BricleApp extends StatelessWidget {
           seedColor: const Color(0xFFE3000B),
           brightness: Brightness.light,
         ),
-        textTheme: GoogleFonts.fredokaOneTextTheme(),
+        textTheme: GoogleFonts.fredokaTextTheme(),
         useMaterial3: true,
       ),
       home: const HomeScreen(),

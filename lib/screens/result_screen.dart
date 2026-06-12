@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/brick.dart';
 import 'home_screen.dart';
 
 class ResultScreen extends StatefulWidget {
@@ -13,30 +12,30 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _ctrl;
+    with TickerProviderStateMixin {
+  late AnimationController _confettiCtrl;
+  late AnimationController _scaleCtrl;
   late Animation<double> _scale;
   final List<_ConfettiPiece> _pieces = List.generate(50, (_) => _ConfettiPiece());
 
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(
+    _confettiCtrl = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 4),
     )..repeat();
-    _scale = CurvedAnimation(
-      parent: AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 800),
-      )..forward(),
-      curve: Curves.elasticOut,
-    );
+    _scaleCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    )..forward();
+    _scale = CurvedAnimation(parent: _scaleCtrl, curve: Curves.elasticOut);
   }
 
   @override
   void dispose() {
-    _ctrl.dispose();
+    _confettiCtrl.dispose();
+    _scaleCtrl.dispose();
     super.dispose();
   }
 
@@ -54,9 +53,9 @@ class _ResultScreenState extends State<ResultScreen>
         child: Stack(
           children: [
             AnimatedBuilder(
-              animation: _ctrl,
+              animation: _confettiCtrl,
               builder: (context, _) => CustomPaint(
-                painter: _ConfettiPainter(_pieces, _ctrl.value),
+                painter: _ConfettiPainter(_pieces, _confettiCtrl.value),
                 size: MediaQuery.of(context).size,
               ),
             ),
@@ -70,8 +69,9 @@ class _ResultScreenState extends State<ResultScreen>
                     const SizedBox(height: 16),
                     Text(
                       'TEBRİKLER!',
-                      style: GoogleFonts.fredokaOne(
+                      style: GoogleFonts.fredoka(
                         fontSize: 52,
+                        fontWeight: FontWeight.w700,
                         color: Colors.white,
                         letterSpacing: 4,
                         shadows: const [
@@ -82,8 +82,9 @@ class _ResultScreenState extends State<ResultScreen>
                     const SizedBox(height: 12),
                     Text(
                       '${widget.score} PUAN',
-                      style: GoogleFonts.fredokaOne(
+                      style: GoogleFonts.fredoka(
                         fontSize: 40,
+                        fontWeight: FontWeight.w700,
                         color: const Color(0xFFFFD700),
                       ),
                     ),
@@ -95,7 +96,8 @@ class _ResultScreenState extends State<ResultScreen>
                         (_) => false,
                       ),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 18),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 44, vertical: 18),
                         decoration: BoxDecoration(
                           color: const Color(0xFF00A850),
                           borderRadius: BorderRadius.circular(8),
@@ -109,8 +111,9 @@ class _ResultScreenState extends State<ResultScreen>
                         ),
                         child: Text(
                           'YENİ OYUN',
-                          style: GoogleFonts.fredokaOne(
+                          style: GoogleFonts.fredoka(
                             fontSize: 26,
+                            fontWeight: FontWeight.w700,
                             color: Colors.white,
                             letterSpacing: 2,
                           ),
@@ -128,22 +131,23 @@ class _ResultScreenState extends State<ResultScreen>
   }
 }
 
+const _confettiColors = [
+  Color(0xFFE3000B),
+  Color(0xFFFFD700),
+  Color(0xFF006CB7),
+  Color(0xFF00A850),
+  Color(0xFFFF7200),
+  Color(0xFFFF69B4),
+];
+
 class _ConfettiPiece {
   final double x = Random().nextDouble();
   final double speed = 0.15 + Random().nextDouble() * 0.85;
   final double phase = Random().nextDouble();
   final double size = 6 + Random().nextDouble() * 10;
   final double drift = (Random().nextDouble() - 0.5) * 30;
-  final Color color = legoColors[Random().nextInt(legoColors.length)];
-
-  static const legoColors = [
-    Color(0xFFE3000B),
-    Color(0xFFFFD700),
-    Color(0xFF006CB7),
-    Color(0xFF00A850),
-    Color(0xFFFF7200),
-    Color(0xFFFF69B4),
-  ];
+  final Color color =
+      _confettiColors[Random().nextInt(_confettiColors.length)];
 }
 
 class _ConfettiPainter extends CustomPainter {
@@ -162,7 +166,8 @@ class _ConfettiPainter extends CustomPainter {
       canvas.translate(x, y);
       canvas.rotate(progress * 4 * pi);
       canvas.drawRect(
-        Rect.fromCenter(center: Offset.zero, width: p.size, height: p.size * 0.5),
+        Rect.fromCenter(
+            center: Offset.zero, width: p.size, height: p.size * 0.5),
         Paint()..color = p.color,
       );
       canvas.restore();

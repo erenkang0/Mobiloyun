@@ -24,7 +24,7 @@ class BrickPalette extends ConsumerWidget {
             padding: const EdgeInsets.only(left: 14, top: 8, bottom: 2),
             child: Text(
               'TUĞLALAR  —  Seç ve grid\'e yerleştir',
-              style: GoogleFonts.fredokaOne(
+              style: GoogleFonts.fredoka(
                 fontSize: 11,
                 color: Colors.white38,
                 letterSpacing: 1,
@@ -39,18 +39,20 @@ class BrickPalette extends ConsumerWidget {
                       icon: const Icon(Icons.refresh, color: Colors.white70),
                       label: Text(
                         'Yeni Tuğlalar',
-                        style: GoogleFonts.fredokaOne(color: Colors.white70),
+                        style: GoogleFonts.fredoka(color: Colors.white70),
                       ),
                     ),
                   )
                 : ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 8),
                     scrollDirection: Axis.horizontal,
                     itemCount: gameState.palette.length,
                     separatorBuilder: (_, __) => const SizedBox(width: 14),
                     itemBuilder: (context, i) {
                       final brick = gameState.palette[i];
-                      final isSelected = gameState.selectedBrickId == brick.id;
+                      final isSelected =
+                          gameState.selectedBrickId == brick.id;
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -66,14 +68,17 @@ class BrickPalette extends ConsumerWidget {
                             ),
                             childWhenDragging: Opacity(
                               opacity: 0.25,
-                              child: BrickWidget(brick: brick, cellSize: _cellSize),
+                              child:
+                                  BrickWidget(brick: brick, cellSize: _cellSize),
                             ),
-                            onDragStarted: () => notifier.selectBrick(brick.id),
+                            onDragStarted: () =>
+                                notifier.selectBrick(brick.id),
                             child: BrickWidget(
                               brick: brick,
                               cellSize: _cellSize,
                               isSelected: isSelected,
-                              onTap: () => notifier.selectBrick(isSelected ? null : brick.id),
+                              onTap: () => notifier.selectBrick(
+                                  isSelected ? null : brick.id),
                             ),
                           ),
                           if (isSelected)
@@ -81,7 +86,8 @@ class BrickPalette extends ConsumerWidget {
                               onTap: () => notifier.rotateBrick(brick.id),
                               child: const Padding(
                                 padding: EdgeInsets.only(top: 3),
-                                child: Icon(Icons.rotate_right, color: Colors.white60, size: 18),
+                                child: Icon(Icons.rotate_right,
+                                    color: Colors.white60, size: 18),
                               ),
                             ),
                         ],

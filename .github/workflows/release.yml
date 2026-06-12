@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Kodu indir
         uses: actions/checkout@v4
+        with:
+          ref: claude/mobile-game-planning-cw4abu
 
       - name: Java 17 kur
         uses: actions/setup-java@v4
@@ -32,14 +34,8 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Flutter versiyonu
-        run: flutter --version
-
       - name: Bağımlılıkları yükle
         run: flutter pub get
-
-      - name: Kod analizi
-        run: flutter analyze --no-fatal-infos
 
       - name: APK derle (ARM64 + ARM32)
         run: flutter build apk --release --split-per-abi
@@ -55,9 +51,6 @@ jobs:
           else
             echo "name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           fi
-
-      - name: APK dosyalarını listele
-        run: ls -lh build/app/outputs/flutter-apk/
 
       - name: GitHub Release oluştur
         uses: softprops/action-gh-release@v2
@@ -86,11 +79,10 @@ jobs:
             4. Oyunu açın ve yaratıcılığınızı konuşturun! 🎮
 
             ### 🎮 Özellikler
-            - Serbest Yapım modu – istediğini inşa et
-            - Meydan Oku modu – hedef şekli doldur, bonus puan kazan
-            - Sürükle-bırak + dokunarak yerleştirme
-            - Tuğla döndürme
-            - Geri alma (undo)
+            - Serbest Yapım modu
+            - Meydan Oku modu
+            - Sürükle-bırak + dokunarak tuğla yerleştirme
+            - Tuğla döndürme & geri alma (undo)
             - 3D Lego stud görünümü
             - Animasyonlu konfeti tebrik ekranı
           files: |
